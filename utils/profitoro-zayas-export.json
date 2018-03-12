@@ -1,0 +1,269 @@
+{
+  "configuration" : {
+    "5WIoOdVYsjRFJVnf8bXUaev10b82" : {
+      "longBreak" : 0.1,
+      "pomodorosTillLongBreak" : 3,
+      "shortBreak" : 0.1,
+      "workingPomodoro" : 0.1
+    },
+    "MUeffWcKQrYnDhMG1UdLokvWhm73" : {
+      "WorkingPomodoro" : 43,
+      "longBreak" : 19,
+      "pomodorosTillLongBreak" : 3,
+      "setWorkingPomodoro" : 43,
+      "shortBreak" : 51,
+      "value" : 4,
+      "workingPomodoro" : 1
+    },
+    "QXNYbnML6VXm4Cdpx4EI67EubZ72" : {
+      "longBreak" : 10,
+      "pomodorosTillLongBreak" : 3,
+      "shortBreak" : 5,
+      "workingPomodoro" : 25
+    },
+    "QYHoiP8DptXxHiCo6d4L7KjEbdI3" : {
+      "longBreak" : 10,
+      "pomodorosTillLongBreak" : 3,
+      "shortBreak" : 5,
+      "workingPomodoro" : 0.1
+    },
+    "Rk6DUpXK74U8HpIb0jiTHhL5WhI2" : {
+      "longBreak" : 10,
+      "pomodorosTillLongBreak" : 3,
+      "shortBreak" : 5,
+      "workingPomodoro" : 25
+    },
+    "UHPYw5Fl3WbbANKFys0UTImnoJH3" : {
+      "longBreak" : 0.1,
+      "pomodorosTillLongBreak" : 3,
+      "shortBreak" : 0.1,
+      "workingPomodoro" : 0.1
+    },
+    "test" : {
+      "longBreak" : 1,
+      "pomodorosTillLongBreak" : 6,
+      "shortBreak" : 0.1,
+      "workingPomodoro" : 0.2
+    }
+  },
+  "statistics" : {
+    "5WIoOdVYsjRFJVnf8bXUaev10b82" : {
+      "-KxAhRqvTFoyTHkWbVaL" : true,
+      "pomodorosLastMonth" : 0,
+      "pomodorosLastWeek" : 0,
+      "pomodorosToday" : 0,
+      "totalPomodoros" : 86,
+      "workoutLastWeek" : 0,
+      "workouts" : {
+        "-KxAh318PkwjDd8iJQzD" : 2,
+        "-KxAhHYOvMk_PxT9sL03" : 1,
+        "-KxAhov00Ozx0Wm6V1So" : 2,
+        "-L0hrHBbJCxlLDe23IEI" : 2,
+        "-L0huhuHHdU7eyUeNLB0" : 1
+      },
+      "workoutsLastMonth" : 0,
+      "workoutsToday" : 0,
+      "workoutsTotal" : 0
+    },
+    "MUeffWcKQrYnDhMG1UdLokvWhm73" : {
+      "pomodorosLastMonth" : 0,
+      "pomodorosLastWeek" : 0,
+      "pomodorosToday" : 0,
+      "totalPomodoros" : 1,
+      "workoutLastWeek" : 0,
+      "workoutsLastMonth" : 0,
+      "workoutsToday" : 0,
+      "workoutsTotal" : 0
+    },
+    "QXNYbnML6VXm4Cdpx4EI67EubZ72" : {
+      "pomodorosLastMonth" : 0,
+      "pomodorosLastWeek" : 0,
+      "pomodorosToday" : 0,
+      "totalPomodoros" : 0,
+      "workoutLastWeek" : 0,
+      "workoutsLastMonth" : 0,
+      "workoutsToday" : 0,
+      "workoutsTotal" : 0
+    },
+    "QYHoiP8DptXxHiCo6d4L7KjEbdI3" : {
+      "pomodorosLastMonth" : 0,
+      "pomodorosLastWeek" : 0,
+      "pomodorosToday" : 0,
+      "totalPomodoros" : 5,
+      "workoutLastWeek" : 0,
+      "workoutsLastMonth" : 0,
+      "workoutsToday" : 0,
+      "workoutsTotal" : 0
+    },
+    "Rk6DUpXK74U8HpIb0jiTHhL5WhI2" : {
+      "pomodorosLastMonth" : 0,
+      "pomodorosLastWeek" : 0,
+      "pomodorosToday" : 0,
+      "totalPomodoros" : 0,
+      "workoutLastWeek" : 0,
+      "workoutsLastMonth" : 0,
+      "workoutsToday" : 0,
+      "workoutsTotal" : 0
+    },
+    "UHPYw5Fl3WbbANKFys0UTImnoJH3" : {
+      "pomodorosLastMonth" : 0,
+      "pomodorosLastWeek" : 0,
+      "pomodorosToday" : 0,
+      "totalPomodoros" : 7,
+      "workoutLastWeek" : 0,
+      "workoutsLastMonth" : 0,
+      "workoutsToday" : 0,
+      "workoutsTotal" : 0
+    }
+  },
+  "user-workouts" : {
+    "5WIoOdVYsjRFJVnf8bXUaev10b82" : {
+      "-KxAh318PkwjDd8iJQzD" : {
+        "date" : 1508803625003,
+        "description" : "Do as many pushups as you can. Don't forget to make small intervals between your sets of pushups",
+        "name" : "Push-ups",
+        "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2F43118bc0-b84f-11e7-93b1-4542e58b4fb4%2Fpushups.png?alt=media&token=3840f54d-1e3d-4f8c-afe1-c54c4d850ab7" ],
+        "rate" : 0,
+        "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+        "username" : "test"
+      },
+      "-KxAhHYOvMk_PxT9sL03" : {
+        "date" : 1508803684476,
+        "description" : "Stay in plank for as much as you can",
+        "name" : "Plank",
+        "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2F5b60d7d0-b84f-11e7-93b1-4542e58b4fb4%2Fplank.JPG?alt=media&token=742bfef0-84c3-4511-9de0-c0f561069995" ],
+        "rate" : 0,
+        "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+        "username" : "test"
+      },
+      "-KxAhRqvTFoyTHkWbVaL" : {
+        "date" : 1508803726686,
+        "description" : "Stretch your legs, 30 seconds each, repeat 3 times",
+        "name" : "Stretch",
+        "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2F75177c10-b84f-11e7-93b1-4542e58b4fb4%2Fstretch.jpg?alt=media&token=82b0daf3-bb54-4dcc-920a-001b67eab6ac" ],
+        "rate" : 0,
+        "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+        "username" : "test"
+      },
+      "-KxAhbwinpHZSoQjTjfs" : {
+        "date" : 1508803772113,
+        "description" : "Do some squats. Make intervals. For example, 5 sets of 10 squats with 15 seconds interval between each set",
+        "name" : "Squats",
+        "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2F90499cc0-b84f-11e7-93b1-4542e58b4fb4%2Fsquats.jpg?alt=media&token=626fb6b7-8699-4079-8c20-1cf5c047cf01" ],
+        "rate" : 0,
+        "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+        "username" : "test"
+      },
+      "-KxAhov00Ozx0Wm6V1So" : {
+        "date" : 1508803825252,
+        "description" : "Stay in chair for as long as you can. If you want to try with intervals, do 1-minute chairs with 30 seconds intervals",
+        "name" : "Chair",
+        "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2Fb0315640-b84f-11e7-93b1-4542e58b4fb4%2Fchair.JPG?alt=media&token=405d5c6d-0449-45d4-ba36-72896040c633" ],
+        "rate" : 0,
+        "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+        "username" : "test"
+      },
+      "-KxAi0fQf8IqLDrz6Fpb" : {
+        "date" : 1508803877502,
+        "description" : "Have a small power nap :)",
+        "name" : "Sleep 😴",
+        "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2Fcbab0740-b84f-11e7-93b1-4542e58b4fb4%2FIMG_2410.JPG?alt=media&token=6c7f2f1a-8629-4838-92e0-afd08681dd58" ],
+        "rate" : 0,
+        "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+        "username" : "test"
+      },
+      "-L0hrHBbJCxlLDe23IEI" : {
+        "date" : 1513671697259,
+        "description" : "Test",
+        "name" : "Test",
+        "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2Fa156cd90-e495-11e7-a368-89da7b6bf747%2Fobama-normal-365xXx80.jpg?alt=media&token=ba553746-b7a4-404c-975d-f4e9088bf19f" ],
+        "rate" : 0,
+        "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+        "username" : "test"
+      },
+      "-L0huhuHHdU7eyUeNLB0" : {
+        "date" : 1513672597206,
+        "description" : "Test2",
+        "name" : "Test2",
+        "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2Fb9242d80-e497-11e7-a368-89da7b6bf747%2Fjoe-biden-41.jpg?alt=media&token=29c4874e-8601-480c-a59f-1b2434da2eee", "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2Fb9245490-e497-11e7-a368-89da7b6bf747%2FObamafunny.jpg?alt=media&token=29f42d27-9bbc-4b3e-8607-fd2a5a26ff9b" ],
+        "rate" : 0,
+        "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+        "username" : "test"
+      }
+    }
+  },
+  "workouts" : {
+    "-KxAh318PkwjDd8iJQzD" : {
+      "date" : 1508803625003,
+      "description" : "Do as many pushups as you can. Don't forget to make small intervals between your sets of pushups",
+      "name" : "Push-ups",
+      "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2F43118bc0-b84f-11e7-93b1-4542e58b4fb4%2Fpushups.png?alt=media&token=3840f54d-1e3d-4f8c-afe1-c54c4d850ab7" ],
+      "rate" : 0,
+      "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+      "username" : "test"
+    },
+    "-KxAhHYOvMk_PxT9sL03" : {
+      "date" : 1508803684476,
+      "description" : "Stay in plank for as much as you can",
+      "name" : "Plank",
+      "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2F5b60d7d0-b84f-11e7-93b1-4542e58b4fb4%2Fplank.JPG?alt=media&token=742bfef0-84c3-4511-9de0-c0f561069995" ],
+      "rate" : 0,
+      "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+      "username" : "test"
+    },
+    "-KxAhRqvTFoyTHkWbVaL" : {
+      "date" : 1508803726686,
+      "description" : "Stretch your legs, 30 seconds each, repeat 3 times",
+      "name" : "Stretch",
+      "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2F75177c10-b84f-11e7-93b1-4542e58b4fb4%2Fstretch.jpg?alt=media&token=82b0daf3-bb54-4dcc-920a-001b67eab6ac" ],
+      "rate" : 0,
+      "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+      "username" : "test"
+    },
+    "-KxAhbwinpHZSoQjTjfs" : {
+      "date" : 1508803772113,
+      "description" : "Do some squats. Make intervals. For example, 5 sets of 10 squats with 15 seconds interval between each set",
+      "name" : "Squats",
+      "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2F90499cc0-b84f-11e7-93b1-4542e58b4fb4%2Fsquats.jpg?alt=media&token=626fb6b7-8699-4079-8c20-1cf5c047cf01" ],
+      "rate" : 0,
+      "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+      "username" : "test"
+    },
+    "-KxAhov00Ozx0Wm6V1So" : {
+      "date" : 1508803825252,
+      "description" : "Stay in chair for as long as you can. If you want to try with intervals, do 1-minute chairs with 30 seconds intervals",
+      "name" : "Chair",
+      "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2Fb0315640-b84f-11e7-93b1-4542e58b4fb4%2Fchair.JPG?alt=media&token=405d5c6d-0449-45d4-ba36-72896040c633" ],
+      "rate" : 0,
+      "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+      "username" : "test"
+    },
+    "-KxAi0fQf8IqLDrz6Fpb" : {
+      "date" : 1508803877502,
+      "description" : "Have a small power nap :)",
+      "name" : "Sleep 😴",
+      "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2Fcbab0740-b84f-11e7-93b1-4542e58b4fb4%2FIMG_2410.JPG?alt=media&token=6c7f2f1a-8629-4838-92e0-afd08681dd58" ],
+      "rate" : 0,
+      "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+      "username" : "test"
+    },
+    "-L0hrHBbJCxlLDe23IEI" : {
+      "date" : 1513671697259,
+      "description" : "Test",
+      "name" : "Test",
+      "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2Fa156cd90-e495-11e7-a368-89da7b6bf747%2Fobama-normal-365xXx80.jpg?alt=media&token=ba553746-b7a4-404c-975d-f4e9088bf19f" ],
+      "rate" : 0,
+      "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+      "username" : "test"
+    },
+    "-L0huhuHHdU7eyUeNLB0" : {
+      "date" : 1513672597206,
+      "description" : "Test2",
+      "name" : "Test2",
+      "pictures" : [ "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2Fb9242d80-e497-11e7-a368-89da7b6bf747%2Fjoe-biden-41.jpg?alt=media&token=29c4874e-8601-480c-a59f-1b2434da2eee", "https://firebasestorage.googleapis.com/v0/b/profitoro-zayas.appspot.com/o/workouts%2Fb9245490-e497-11e7-a368-89da7b6bf747%2FObamafunny.jpg?alt=media&token=29f42d27-9bbc-4b3e-8607-fd2a5a26ff9b" ],
+      "rate" : 0,
+      "uid" : "5WIoOdVYsjRFJVnf8bXUaev10b82",
+      "username" : "test"
+    }
+  }
+}
