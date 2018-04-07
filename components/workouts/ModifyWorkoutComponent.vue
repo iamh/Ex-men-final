@@ -1,11 +1,12 @@
 <template>
   <div>
-    <h2 class="title">Add your workout</h2>
+    <h2 class="title">Modify your workout</h2>
       <form>
-        <input v-model="name" type="text" class="input" placeholder="Name it">
-        <textarea v-model="description" type="text" class="input" placeholder="Describe it"></textarea>
+        <input v-model="name" type="text" class="input" :placeholder="workoutDate ? workoutDate.name : ''">
+        <textarea v-model="description" type="text" class="input" :placeholder="workoutDate ? workoutDate.description : ''"></textarea>
         <div class="image-upload">
-          <label class="title" for="imageFile">Add an image</label>
+          <img :src="workoutDate ? workoutDate.pictures[0] : ''">
+          <label class="title" for="imageFile">Relace the image</label>
           <input @change="filesChange($event.target.files)" type="file" multiple class="form-control-file" ref="imageFile">
         </div>
         <div class="row">
@@ -48,6 +49,7 @@
         ev.preventDefault()
         ev.stopPropagation()
         this.reset()
+        this.$emit('update:control', false)
       },
       onCreateNew (ev) {
         this.isCreating = true
@@ -72,7 +74,16 @@
   }
 </script>
 <style scoped lang="scss">
-  .image-upload {
-    margin: 40px 0;
+  .title {
+    width: 100%;
+  }
+  .img-upload {
+    width: 200px;
+  }
+  img {
+    width: 200px;
+  }
+  .row {
+    margin-top: 1em;
   }
 </style>

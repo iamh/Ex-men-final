@@ -75,6 +75,7 @@
         this.rate = workout.rate
         this.pictures = workout.pictures
         this.readDates(workout['.key'])
+        this.$emit('update:control', true)
       },
       onLoadMore () {
         this.actualWorkoutsSize = this.actualWorkoutsSize + this.pageSize
