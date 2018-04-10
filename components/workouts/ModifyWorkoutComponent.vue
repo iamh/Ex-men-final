@@ -2,10 +2,10 @@
   <div>
     <h2 class="title">Modify your workout</h2>
       <form>
-        <input v-model="name" type="text" class="input" :placeholder="workoutDate ? workoutDate.name : ''">
-        <textarea v-model="description" type="text" class="input" :placeholder="workoutDate ? workoutDate.description : ''"></textarea>
+        <input v-model="name" type="text" class="input" :placeholder="mode.workout ? mode.workout.name : ''">
+        <textarea v-model="description" type="text" class="input" :placeholder="mode.workout ? mode.workout.description : ''"></textarea>
         <div class="image-upload">
-          <img :src="workoutDate ? workoutDate.pictures[0] : ''">
+          <img :src="mode.workout ? mode.workout.pictures[0] : ''">
           <label class="title" for="imageFile">Relace the image</label>
           <input @change="filesChange($event.target.files)" type="file" multiple class="form-control-file" ref="imageFile">
         </div>
@@ -32,10 +32,10 @@
       }
     },
     computed: {
-      ...mapGetters({workoutDate: 'getWorkoutDate'})
+      ...mapGetters({mode: 'getMode'})
     },
     methods: {
-      ...mapActions(['createNewWorkout', 'uploadImages']),
+      ...mapActions(['modifyWorkout', 'uploadImages']),
       filesChange (files) {
         this.pictures = [...files]
       },
@@ -53,11 +53,13 @@
       },
       onCreateNew (ev) {
         this.isCreating = true
+        this.$emit('update:control', false)
         ev.preventDefault()
         ev.stopPropagation()
         if (this.name.length > 0 && this.description.length > 0 && this.pictures.length > 0) {
           this.uploadImages(this.pictures).then(picUrls => {
-            this.createNewWorkout({
+            this.modifyWorkout({
+              key: this.mode.workout['.key'],
               name: this.name,
               description: this.description,
               pictures: picUrls

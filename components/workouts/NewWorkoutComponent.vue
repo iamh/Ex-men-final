@@ -20,7 +20,7 @@
   </div>
 </template>
 <script>
-  import {mapActions, mapGetters} from 'vuex'
+  import {mapActions} from 'vuex'
   export default {
     data () {
       return {
@@ -29,9 +29,6 @@
         pictures: [],
         isCreating: false
       }
-    },
-    computed: {
-      ...mapGetters({workoutDate: 'getWorkoutDate'})
     },
     methods: {
       ...mapActions(['createNewWorkout', 'uploadImages']),

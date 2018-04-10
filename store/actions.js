@@ -114,11 +114,16 @@ export default {
       return wk
     })
   },
-  readDates ({state, commit}, key) {
+  modifyWorkout ({state, commit}, workout) {
     let db = firebaseApp.database()
-    let date = db.ref('workouts/' + key)
-    date.on('value', function (snapshot) {
-      commit('setWorkoutDate', snapshot.val())
+    let date = db.ref('workouts/' + workout.key)
+    date.update({
+      name: workout.name,
+      description: workout.description
+    })
+    let pic = db.ref('workouts/' + workout.key + '/pictures')
+    pic.update({
+      0: workout.pictures
     })
   },
   /**
@@ -337,5 +342,8 @@ export default {
   },
   setLoading ({ commit }, loading) {
     commit('setLoading', loading)
+  },
+  setMode ({commit}, mode) {
+    commit('setMode', mode)
   }
 }

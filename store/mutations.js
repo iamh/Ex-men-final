@@ -46,7 +46,7 @@ export default {
   setLoading (state, loading) {
     state.loading = {...state.loading, ...loading}
   },
-  setWorkoutDate (state, value) {
-    state.workoutDate = value
+  setMode (state, mode) {
+    state.mode = mode
   }
 }

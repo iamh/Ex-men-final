@@ -10,7 +10,10 @@ const configRef = null
 const statisticsRef = null
 const workoutsRef = null
 const displayName = ''
-const workoutDate = null
+
+const mode = {
+  workout: null
+}
 
 const statistics = {
   pomodorosToday: 0,
@@ -33,7 +36,7 @@ export default {
   displayName,
   workouts: [],
   authError: '',
-  workoutDate,
+  mode,
   todos: [
     {
       description: 'Start using ToDo list',

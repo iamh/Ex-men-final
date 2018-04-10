@@ -4,7 +4,7 @@
     <div class="container min-full-height clearfix">
       <div class="main-content row">
         <div class="section-left col-sm-12 col-md-6 col-lg-6 float-left">
-          <workouts-component :control.sync="control"></workouts-component>
+          <workouts-component :control.sync="control" :op="control"></workouts-component>
         </div>
         <div class="section-right col-sm-12 col-md-6 col-lg-6 float-right">
           <modify-workout-component v-show="control === true" :control.sync="control"></modify-workout-component>
@@ -17,12 +17,13 @@
 </template>
 <script>
   import { HeaderComponent, FooterComponent } from '~/components/common'
-  import { NewWorkoutComponent, WorkoutComponent, WorkoutsComponent, ModifyWorkoutComponent } from '~/components/workouts'
+  import { NewWorkoutComponent, WorkoutsComponent, ModifyWorkoutComponent } from '~/components/workouts'
   
   export default {
     data () {
       return {
-        control: false
+        control: false,
+        workoutKey: ''
       }
     },
     middleware: 'authenticated',
@@ -30,7 +31,6 @@
       HeaderComponent,
       FooterComponent,
       NewWorkoutComponent,
-      WorkoutComponent,
       WorkoutsComponent,
       ModifyWorkoutComponent
     }

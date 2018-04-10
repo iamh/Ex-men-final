@@ -2,34 +2,28 @@
   <div>
     <h2 class="title">Manage your workouts</h2>
     <div class="form-group">
-      <input v-model="searchTerm" class="input" type="search" placeholder="Search for workouts">
+      <input v-model="searchTerm" class="input" :disabled="op === true" type="search" :placeholder="op === true ? 'Modifying the workouts' : 'Search for workouts'">
     </div>
     <div class="card-columns">
       <div data-toggle="modal" v-for="(workout, key) in workoutsToDisplayPaginated" :key="key" class="card" @click="onChosenWorkout(workout)">
-        <img class="card-img-top img-fluid" :src="workout.pictures && workout.pictures.length && workout.pictures[0]" :alt="workout.name">
-        <div class="card-block">
-          <p class="card-text">{{ workout.name }}</p>
+        <div v-bind:class="['img-selector', op === false ? '' : (workout['.key'] === mode.workout['.key'] ? 'img-scale-up' : 'img-scale-down') ]">
+          <img class="card-img-top img-fluid" :src="workout.pictures && workout.pictures.length && workout.pictures[0]" :alt="workout.name">
+          <div class="card-block">
+            <p class="card-text">{{ workout.name }}</p>
+          </div>
         </div>
       </div>
     </div>
-    <workout-component
-      :name="name"
-      :description="description"
-      :username="username"
-      :datecreated="datecreated"
-      :pictures="pictures"
-      :rate="rate">
-    </workout-component>
     <workouts-pagination-component @loadMore="onLoadMore" :hasMore="hasMore"></workouts-pagination-component>
   </div>
 </template>
 <script>
   import {mapState, mapActions} from 'vuex'
-  import WorkoutComponent from '~/components/workouts/WorkoutComponent'
   import WorkoutsPaginationComponent from '~/components/workouts/WorkoutsPaginationComponent'
   import moment from 'moment'
 
   export default {
+    props: ['op'],
     data () {
       return {
         name: '',
@@ -44,7 +38,7 @@
       }
     },
     computed: {
-      ...mapState(['workouts']),
+      ...mapState(['workouts', 'mode']),
       workoutsToDisplay () {
         return this.workouts.filter(workout => {
           let name = workout.name.toLowerCase()
@@ -62,11 +56,10 @@
       }
     },
     components: {
-      WorkoutComponent,
       WorkoutsPaginationComponent
     },
     methods: {
-      ...mapActions(['readDates']),
+      ...mapActions(['setMode']),
       onChosenWorkout (workout) {
         this.name = workout.name
         this.description = workout.description
@@ -74,11 +67,16 @@
         this.datecreated = moment(workout.date).format('MMM Do YY')
         this.rate = workout.rate
         this.pictures = workout.pictures
-        this.readDates(workout['.key'])
+        this.setMode({
+          workout: {...workout}
+        })
         this.$emit('update:control', true)
       },
       onLoadMore () {
         this.actualWorkoutsSize = this.actualWorkoutsSize + this.pageSize
+      },
+      destroyed () {
+        this.setMode({workout: null})
       }
     }
   }
@@ -90,6 +88,7 @@
   .card-columns {
     .card {
       cursor: pointer;
+      border: none;
     }
     @include media-breakpoint-only(lg) {
       column-count: 3;
@@ -101,6 +100,16 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+    }
+    .img-selector {
+    transition: transform 0.5s;
+    }
+    .img-scale-up {    
+      transform: scale(1.1);
+    }
+    .img-scale-down {    
+      transform: scale(0.9);    
+      opacity: 0.5;
     }
   }
 </style>
