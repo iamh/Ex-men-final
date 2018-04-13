@@ -32,7 +32,7 @@ export default {
    * @returns {Promise}
    */
   uploadImages ({ state }, files) {
-    return Promise.all(files.map(_uploadImage))
+    return Promise.all(files.map(_uploadImage)).catch(err => console.log('Error uploadImages ' + err))
   },
   /**
    * Creates new workout
@@ -114,17 +114,26 @@ export default {
       return wk
     })
   },
-  modifyWorkout ({state, commit}, workout) {
-    let db = firebaseApp.database()
-    let date = db.ref('workouts/' + workout.key)
-    date.update({
-      name: workout.name,
-      description: workout.description
-    })
-    let pic = db.ref('workouts/' + workout.key + '/pictures')
-    pic.update({
-      0: workout.pictures
-    })
+  modifyWorkout ({state, commit}, {workout, picUrls}) {
+    if (!workout) {
+      return
+    }
+    if (picUrls.length > 0) {
+      workout.pictures = picUrls
+    }
+
+    workout.date = Date.now()
+    workout = {...workout, key: workout['.key']}
+    delete workout['.key']
+
+    // Write the new post's data simultaneously in the posts list and the user's post list.
+    let updates = {}
+    updates['/workouts/' + workout.key] = workout
+    updates['/user-workouts/' + state.user.uid + '/' + workout.key] = workout
+    return firebaseApp
+      .database()
+      .ref()
+      .update(updates)
   },
   /**
    * Creates a new user with given email and password and stores it in the firebase database

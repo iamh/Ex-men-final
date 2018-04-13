@@ -7,8 +7,8 @@
           <workouts-component :control.sync="control" :op="control"></workouts-component>
         </div>
         <div class="section-right col-sm-12 col-md-6 col-lg-6 float-right">
-          <modify-workout-component v-show="control === true" :control.sync="control"></modify-workout-component>
-          <new-workout-component v-show="control === false"></new-workout-component>
+          <modify-workout-component v-if="control" :control.sync="control"></modify-workout-component>
+          <new-workout-component v-if="!control"></new-workout-component>
         </div>
       </div>
     </div>
@@ -22,8 +22,7 @@
   export default {
     data () {
       return {
-        control: false,
-        workoutKey: ''
+        control: false
       }
     },
     middleware: 'authenticated',

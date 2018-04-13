@@ -1,11 +1,25 @@
 <template>
   <div>
+    <div v-show="isCreating" class="modal-wrapper">
+      <div class="modal">
+        <clip-loader/>
+      </div>
+    </div>
+    <div class="modal-wrapper-buttons"  v-show="hidden">
+      <div class="modal-buttons">
+        <h4>Desea guardar los cambios?</h4>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" @click="onModal">Cancel</button>
+          <button type="button" class="btn btn-danger" @click="onModify">Save changes</button>
+        </div>
+      </div>
+    </div>
     <h2 class="title">Modify your workout</h2>
       <form>
-        <input v-model="name" type="text" class="input" :placeholder="mode.workout ? mode.workout.name : ''">
-        <textarea v-model="description" type="text" class="input" :placeholder="mode.workout ? mode.workout.description : ''"></textarea>
+        <input v-model="mode.workout.name" type="text" class="input">
+        <textarea v-model="mode.workout.description" type="text" class="input"></textarea>
         <div class="image-upload">
-          <img :src="mode.workout ? mode.workout.pictures[0] : ''">
+          <img :src="mode.workout.pictures[0]">
           <label class="title" for="imageFile">Relace the image</label>
           <input @change="filesChange($event.target.files)" type="file" multiple class="form-control-file" ref="imageFile">
         </div>
@@ -14,7 +28,7 @@
             <button v-show="!isCreating" @click="onCancel" type="button" class="button button-primary">Cancel</button>
           </div>
           <div class="col">
-            <button v-show="!isCreating" @click="onCreateNew" type="submit" class="button button-primary">Apply</button>
+            <button v-show="!isCreating" type="button" class="button button-primary" :disabled="this.mode.workout.name == '' || this.mode.workout.description == ''" @click="onModal">Apply</button>
           </div>
         </div>
       </form>
@@ -22,28 +36,36 @@
 </template>
 <script>
   import {mapActions, mapGetters} from 'vuex'
+  import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
   export default {
     data () {
       return {
-        name: '',
-        description: '',
         pictures: [],
-        isCreating: false
+        isCreating: false,
+        hidden: false
       }
+    },
+    components: {
+      ClipLoader
     },
     computed: {
       ...mapGetters({mode: 'getMode'})
     },
     methods: {
-      ...mapActions(['modifyWorkout', 'uploadImages']),
+      ...mapActions(['modifyWorkout', 'uploadImages', 'setMode']),
       filesChange (files) {
         this.pictures = [...files]
       },
       reset () {
-        this.name = ''
-        this.description = ''
-        this.pictures = []
-        this.$refs.imageFile.value = null
+        this.setMode({workout: null})
+        this.isCreating = false
+      },
+      onModal () {
+        if (!this.hidden) {
+          this.hidden = true
+        } else {
+          this.hidden = false
+        }
       },
       onCancel (ev) {
         ev.preventDefault()
@@ -51,21 +73,16 @@
         this.reset()
         this.$emit('update:control', false)
       },
-      onCreateNew (ev) {
+      onModify (ev) {
+        this.hidden = false
         this.isCreating = true
         this.$emit('update:control', false)
         ev.preventDefault()
         ev.stopPropagation()
-        if (this.name.length > 0 && this.description.length > 0 && this.pictures.length > 0) {
+        if (this.mode.workout.name.length > 0 && this.mode.workout.description.length > 0) {
           this.uploadImages(this.pictures).then(picUrls => {
-            this.modifyWorkout({
-              key: this.mode.workout['.key'],
-              name: this.name,
-              description: this.description,
-              pictures: picUrls
-            }).then(() => {
+            this.modifyWorkout({workout: this.mode.workout, picUrls}).then(() => {
               this.reset()
-              this.isCreating = false
             })
           })
         } else {
@@ -87,5 +104,48 @@
   }
   .row {
     margin-top: 1em;
+  }
+  .modal-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    z-index: 99999999;
+    background-color:rgba(0,0,0,.2)
+  }
+  .modal-wrapper:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+  .modal {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 auto;    
+  }
+  .modal-wrapper-buttons {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999999;
+    background-color:rgba(0,0,0,.2)
+  }
+  .modal-buttons {
+    position: relative;
+    width: 30%;
+    margin: 90px auto;
+  }
+  .button.button-primary:disabled {
+    background-color: grey;
+  }
+  h4 {
+    color: #4B8A08;
+    font-weight: 800;
   }
 </style>
