@@ -2,12 +2,13 @@
   <div>
     <h2 class="title">Manage your workouts</h2>
     <div class="form-group">
-      <input v-model="searchTerm" class="input" :disabled="op === true" type="search" :placeholder="op === true ? 'Modifying the workouts' : 'Search for workouts'">
+      <input v-model="searchTerm" class="input" :disabled="op" type="search" :placeholder="op ? 'Modifying the workouts' : 'Search for workouts'">
     </div>
     <div class="card-columns">
       <div data-toggle="modal" v-for="(workout, key) in workoutsToDisplayPaginated" :key="key" class="card" @click="onChosenWorkout(workout)">
-        <div v-bind:class="['img-selector', op === false ? '' : (workout['.key'] === mode.workout['.key'] ? 'img-scale-up' : 'img-scale-down') ]">
+        <div :class="['img-selector', !op ? '' : (workout['.key'] === mode.workout['.key'] ? 'img-scale-up' : 'img-scale-down') ]">
           <img class="card-img-top img-fluid" :src="workout.pictures && workout.pictures.length && workout.pictures[0]" :alt="workout.name">
+          <i :class="['icon material-icons', op && workout['.key'] === mode.workout['.key'] ? 'icon-transition' : '']" @click="onDelete(workout)">delete</i>
           <div class="card-block">
             <p class="card-text">{{ workout.name }}</p>
           </div>
@@ -59,7 +60,7 @@
       WorkoutsPaginationComponent
     },
     methods: {
-      ...mapActions(['setMode']),
+      ...mapActions(['setMode', 'deleteWorkout']),
       onChosenWorkout (workout) {
         this.name = workout.name
         this.description = workout.description
@@ -74,6 +75,10 @@
       },
       onLoadMore () {
         this.actualWorkoutsSize = this.actualWorkoutsSize + this.pageSize
+      },
+      onDelete (workout) {
+        this.$emit('update:control', true)
+        this.deleteWorkout(workout['.key'])
       },
       destroyed () {
         this.setMode({workout: null})
@@ -111,5 +116,17 @@
       transform: scale(0.9);    
       opacity: 0.5;
     }
+    .icon {
+      position: absolute;
+      margin: 5px 0 0 -25px;
+      color: #CD5C5C;
+      font-size: 0.1px;
+      -webkit-transition: font-size 1s;
+      transition: font-size 1s; 
+    }
+    .icon-transition {
+      font-size: 1.5rem;
+    }
+ 
   }
 </style>

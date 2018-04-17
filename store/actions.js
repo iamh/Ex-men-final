@@ -135,6 +135,13 @@ export default {
       .ref()
       .update(updates)
   },
+  deleteWorkout ({commit, state}, key) {
+    let db = firebaseApp.database()
+    let workout = db.ref('/workouts/')
+    workout.child(key).remove()
+    let userWorkout = db.ref('/user-workouts/' + state.user.uid)
+    userWorkout.child(key).remove()
+  },
   /**
    * Creates a new user with given email and password and stores it in the firebase database
    * @param {object} store
