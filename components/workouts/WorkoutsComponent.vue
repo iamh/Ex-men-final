@@ -8,7 +8,7 @@
       <div data-toggle="modal" v-for="(workout, key) in workoutsToDisplayPaginated" :key="key" class="card" @click="onChosenWorkout(workout)">
         <div :class="['img-selector', !op ? '' : (workout['.key'] === mode.workout['.key'] ? 'img-scale-up' : 'img-scale-down') ]">
           <img class="card-img-top img-fluid" :src="workout.pictures && workout.pictures.length && workout.pictures[0]" :alt="workout.name">
-          <i :class="['icon material-icons', op && workout['.key'] === mode.workout['.key'] ? 'icon-transition' : '']" @click="onDelete(workout)">delete</i>
+          <i :class="['icon material-icons', op && workout['.key'] === mode.workout['.key'] ? 'icon-transition' : '']" @click="onDelete(workout['.key'])">delete</i>
           <div class="card-block">
             <p class="card-text">{{ workout.name }}</p>
           </div>
@@ -19,7 +19,7 @@
   </div>
 </template>
 <script>
-  import {mapState, mapActions} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
   import WorkoutsPaginationComponent from '~/components/workouts/WorkoutsPaginationComponent'
   import moment from 'moment'
 
@@ -39,7 +39,7 @@
       }
     },
     computed: {
-      ...mapState(['workouts', 'mode']),
+      ...mapGetters({workouts: 'getWorkouts', mode: 'getMode'}),
       workoutsToDisplay () {
         return this.workouts.filter(workout => {
           let name = workout.name.toLowerCase()
@@ -76,12 +76,14 @@
       onLoadMore () {
         this.actualWorkoutsSize = this.actualWorkoutsSize + this.pageSize
       },
-      onDelete (workout) {
-        this.$emit('update:control', true)
-        this.deleteWorkout(workout['.key'])
+      onDelete (key) {
+        event.stopPropagation()
+        this.deleteWorkout(key)
+        this.reset()
       },
-      destroyed () {
+      reset () {
         this.setMode({workout: null})
+        this.$emit('update:control', false)
       }
     }
   }

@@ -16,10 +16,15 @@
     </div>
     <h2 class="title">Modify your workout</h2>
       <form>
-        <input v-model="mode.workout.name" type="text" class="input">
-        <textarea v-model="mode.workout.description" type="text" class="input"></textarea>
-        <div class="image-upload">
-          <img :src="mode.workout.pictures[0]">
+        <input v-model="mode.workout.name" type="text" class="input" placeholder="Name it">
+        <textarea v-model="mode.workout.description" type="text" class="input" placeholder="Describe it"></textarea>
+        <div>
+          <div class="container-img"> 
+            <div v-for="(imagen, key) in pictures" :key="key">
+              <img :src="imagen">
+              <i class="icon material-icons" @click="onDeletePic(key)">delete</i>
+            </div>
+          </div>
           <label class="title" for="imageFile">Relace the image</label>
           <input @change="filesChange($event.target.files)" type="file" multiple class="form-control-file" ref="imageFile">
         </div>
@@ -41,6 +46,7 @@
     data () {
       return {
         pictures: [],
+        newPictures: [],
         isCreating: false,
         hidden: false
       }
@@ -49,16 +55,19 @@
       ClipLoader
     },
     computed: {
-      ...mapGetters({mode: 'getMode'})
+      ...mapGetters({mode: 'getMode', workoutDone: 'getWorkout', getPictures: 'getModePictures'})
+    },
+    watch: {
+      getPictures () { this.pictures = this.getPictures }
     },
     methods: {
-      ...mapActions(['modifyWorkout', 'uploadImages', 'setMode']),
+      ...mapActions(['modifyWorkout', 'uploadImages', 'setMode', 'deletePicture']),
       filesChange (files) {
-        this.pictures = [...files]
+        this.newPictures = [...files]
       },
       reset () {
+        this.$emit('update:control', false)
         this.setMode({workout: null})
-        this.isCreating = false
       },
       onModal () {
         if (!this.hidden) {
@@ -71,18 +80,20 @@
         ev.preventDefault()
         ev.stopPropagation()
         this.reset()
-        this.$emit('update:control', false)
+      },
+      onDeletePic (key) {
+        this.pictures = this.pictures.filter((pic, index) => index !== key)
+        this.mode.workout.pictures = this.pictures
       },
       onModify (ev) {
         this.hidden = false
-        this.isCreating = true
-        this.$emit('update:control', false)
         ev.preventDefault()
         ev.stopPropagation()
         if (this.mode.workout.name.length > 0 && this.mode.workout.description.length > 0) {
-          this.uploadImages(this.pictures).then(picUrls => {
+          this.uploadImages(this.newPictures).then(picUrls => {
             this.modifyWorkout({workout: this.mode.workout, picUrls}).then(() => {
               this.reset()
+              this.isCreating = false
             })
           })
         } else {
@@ -96,11 +107,14 @@
   .title {
     width: 100%;
   }
-  .img-upload {
-    width: 200px;
+  .container-img {
+    flex-wrap: wrap;
+    flex-direction: row;
+    display: flex;
   }
   img {
-    width: 200px;
+    width: 160px;
+    margin-right: 0.5em;
   }
   .row {
     margin-top: 1em;
@@ -148,4 +162,13 @@
     color: #4B8A08;
     font-weight: 800;
   }
+  .icon {
+      position: absolute;
+      margin: 5px 0 0 -35px;
+      color: #CD5C5C;
+      font-size: 1.2rem;
+      -webkit-transition: font-size 1s;
+      transition: font-size 1s;
+      cursor: pointer;
+    }
 </style>

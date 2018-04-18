@@ -99,7 +99,6 @@ export default {
    * @param {number} totalPomodoros
    */
   saveWorkoutStats ({ state }, {workout, time}) {
-    console.log('****', time)
     state.statisticsRef.child('workouts/' + workout['.key']).transaction(wk => {
       if (!wk) {
         wk = {
@@ -140,6 +139,13 @@ export default {
     let workout = db.ref('/workouts/')
     workout.child(key).remove()
     let userWorkout = db.ref('/user-workouts/' + state.user.uid)
+    userWorkout.child(key).remove()
+  },
+  deletePicture ({commit, state}, {workoutKey, key}) {
+    let db = firebaseApp.database()
+    let workout = db.ref('/workouts/' + workoutKey + '/pictures')
+    workout.child(key).remove()
+    let userWorkout = db.ref('/user-workouts/' + state.user.uid + '/' + workoutKey + '/pictures')
     userWorkout.child(key).remove()
   },
   /**
@@ -362,4 +368,5 @@ export default {
   setMode ({commit}, mode) {
     commit('setMode', mode)
   }
+
 }

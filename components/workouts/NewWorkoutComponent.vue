@@ -13,7 +13,7 @@
             <button v-show="!isCreating" @click="onCancel" type="button" class="button button-primary">Cancel</button>
           </div>
           <div class="col">
-            <button v-show="!isCreating" @click="onCreateNew" type="submit" class="button button-primary">Apply</button>
+            <button v-show="!isCreating" :disabled="this.name == '' || this.description == '' || this.pictures.length == 0" @click="onCreateNew" type="submit" class="button button-primary">Apply</button>
           </div>
         </div>
       </form>
@@ -71,5 +71,8 @@
 <style scoped lang="scss">
   .image-upload {
     margin: 40px 0;
+  }
+  .button.button-primary:disabled {
+    background-color: grey;
   }
 </style>

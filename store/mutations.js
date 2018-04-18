@@ -49,4 +49,5 @@ export default {
   setMode (state, mode) {
     state.mode = mode
   }
+
 }

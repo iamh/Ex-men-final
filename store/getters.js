@@ -20,5 +20,6 @@ export default {
   progressTodos: state => _.sortBy(_.filter(state.todos, todo => todo.progress), 'priority'),
   doneTodos: state => _.filter(state.todos, todo => !todo.active),
   getLoading: state => loading => state.loading[loading],
-  getMode: state => state.mode
+  getMode: state => state.mode,
+  getModePictures: state => state.mode.workout ? state.mode.workout.pictures : []
 }
