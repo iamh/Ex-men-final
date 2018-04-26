@@ -26,7 +26,7 @@
             </div>
           </div>
           <label class="title" for="imageFile">Relace the image</label>
-          <input @change="previewFile" type="file" multiple class="form-control-file" ref="imageFile">
+          <input @change="previewFile($event.target.files)" type="file" multiple class="form-control-file" ref="imageFile">
         </div>
         <div class="row">
           <div class="col">
@@ -46,7 +46,9 @@
     data () {
       return {
         pictures: [],
+        firePictures: [],
         newPictures: [],
+        auxPictures: [],
         isCreating: false,
         hidden: false
       }
@@ -68,8 +70,9 @@
       }
     },
     methods: {
-      ...mapActions(['modifyWorkout', 'setMode', 'deletePicture']),
-      previewFile (event) {
+      ...mapActions(['modifyWorkout', 'setMode', 'deletePicture', 'uploadImages']),
+      previewFile (files) {
+        this.firePictures = [...files]
         for (let i = 0; i < event.target.files.length; i++) {
           var reader = new FileReader()
           reader.onload = (event) => {
@@ -100,12 +103,24 @@
         this.mode.workout.pictures = this.pictures
       },
       onModify (ev) {
-        this.mode.workout.pictures = this.pictures
         this.hidden = false
         ev.preventDefault()
         ev.stopPropagation()
+        for (let i = 0; i < this.pictures.length; i++) {
+          if (this.mode.workout.pictures.includes(this.pictures[i])) {
+            this.auxPictures.push(this.pictures[i])
+          }
+        }
         if (this.mode.workout.name.length > 0 && this.mode.workout.description.length > 0) {
-          this.modifyWorkout({workout: this.mode.workout}).then(() => {
+          this.uploadImages(this.firePictures).then(picUrls => {
+            this.modifyWorkout({
+              workout: this.mode.workout,
+              pictures: this.auxPictures.concat(picUrls)
+            }).then(() => {
+              this.reset()
+              this.isCreating = false
+            })
+          }).then(() => {
             this.reset()
             this.isCreating = false
           })

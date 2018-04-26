@@ -113,10 +113,14 @@ export default {
       return wk
     })
   },
-  modifyWorkout ({state, commit}, {workout}) {
+  modifyWorkout ({state, commit}, {workout, pictures}) {
     if (!workout) {
       return
     }
+    if (pictures.length > 0) {
+      workout.pictures = pictures
+    }
+
     workout.date = Date.now()
     workout = {...workout, key: workout['.key']}
     delete workout['.key']
