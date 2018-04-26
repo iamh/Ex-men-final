@@ -20,13 +20,13 @@
         <textarea v-model="mode.workout.description" type="text" class="input" placeholder="Describe it"></textarea>
         <div>
           <div class="container-img"> 
-            <div v-for="(imagen, key) in pictures" :key="key">
+            <div v-for="(imagen, key) in getPictures" :key="key">
               <img :src="imagen">
               <i class="icon material-icons" @click="onDeletePic(key)">delete</i>
             </div>
           </div>
           <label class="title" for="imageFile">Relace the image</label>
-          <input @change="filesChange($event.target.files)" type="file" multiple class="form-control-file" ref="imageFile">
+          <input @change="previewFile" type="file" multiple class="form-control-file" ref="imageFile">
         </div>
         <div class="row">
           <div class="col">
@@ -55,15 +55,28 @@
       ClipLoader
     },
     computed: {
-      ...mapGetters({mode: 'getMode', workoutDone: 'getWorkout', getPictures: 'getModePictures'})
+      ...mapGetters({mode: 'getMode'}),
+      getPictures () {
+        this.pictures = this.mode.workout.pictures.concat(this.newPictures)
+        return this.pictures
+      }
     },
     watch: {
-      getPictures () { this.pictures = this.getPictures }
+      mode () {
+        this.$refs.imageFile.value = null
+        this.newPictures = []
+      }
     },
     methods: {
-      ...mapActions(['modifyWorkout', 'uploadImages', 'setMode', 'deletePicture']),
-      filesChange (files) {
-        this.newPictures = [...files]
+      ...mapActions(['modifyWorkout', 'setMode', 'deletePicture']),
+      previewFile (event) {
+        for (let i = 0; i < event.target.files.length; i++) {
+          var reader = new FileReader()
+          reader.onload = (event) => {
+            this.newPictures.push(event.target.result)
+          }
+          reader.readAsDataURL(event.target.files[i])
+        }
       },
       reset () {
         this.$emit('update:control', false)
@@ -82,19 +95,19 @@
         this.reset()
       },
       onDeletePic (key) {
+        this.newPictures = []
         this.pictures = this.pictures.filter((pic, index) => index !== key)
         this.mode.workout.pictures = this.pictures
       },
       onModify (ev) {
+        this.mode.workout.pictures = this.pictures
         this.hidden = false
         ev.preventDefault()
         ev.stopPropagation()
         if (this.mode.workout.name.length > 0 && this.mode.workout.description.length > 0) {
-          this.uploadImages(this.newPictures).then(picUrls => {
-            this.modifyWorkout({workout: this.mode.workout, picUrls}).then(() => {
-              this.reset()
-              this.isCreating = false
-            })
+          this.modifyWorkout({workout: this.mode.workout}).then(() => {
+            this.reset()
+            this.isCreating = false
           })
         } else {
           this.isCreating = false
