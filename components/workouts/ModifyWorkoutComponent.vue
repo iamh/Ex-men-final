@@ -19,14 +19,16 @@
         <input v-model="mode.workout.name" type="text" class="input" placeholder="Name it">
         <textarea v-model="mode.workout.description" type="text" class="input" placeholder="Describe it"></textarea>
         <div>
-          <div class="container-img"> 
+          <i :style="{color: !select ? 'red' : 'grey'}" class="icon material-icons" @click="onSelect">delete</i>
+          <div class="container-img">
             <div v-for="(imagen, key) in getPictures" :key="key">
               <img :src="imagen">
-              <i class="icon material-icons" @click="onDeletePic(key)">delete</i>
+         <!-- <i class="icon material-icons" @click="onDeletePic(key)">delete</i> -->
+              <input v-if="select" :id="key" v-model="checked" :value="key" class="check" type="checkbox">
             </div>
           </div>
           <label class="title" for="imageFile">Relace the image</label>
-          <input @change="previewFile($event.target.files)" type="file" multiple class="form-control-file" ref="imageFile">
+          <input @change="previewFile($event.target.files)" type="file" :disabled="select" multiple class="form-control-file" ref="imageFile">
         </div>
         <div class="row">
           <div class="col">
@@ -49,8 +51,11 @@
         firePictures: [],
         newPictures: [],
         auxPictures: [],
+        arrayKey: [],
         isCreating: false,
-        hidden: false
+        hidden: false,
+        select: false,
+        checked: []
       }
     },
     components: {
@@ -67,6 +72,8 @@
       mode () {
         this.$refs.imageFile.value = null
         this.newPictures = []
+        this.select = false
+        this.arrayKey = []
       }
     },
     methods: {
@@ -84,6 +91,8 @@
       reset () {
         this.$emit('update:control', false)
         this.setMode({workout: null})
+        this.select = false
+        this.arrayKey = []
       },
       onModal () {
         if (!this.hidden) {
@@ -92,20 +101,34 @@
           this.hidden = false
         }
       },
+      onSelect () {
+        if (!this.select) {
+          this.select = true
+        } else {
+          this.select = false
+          this.checked = []
+        }
+      },
       onCancel (ev) {
         ev.preventDefault()
         ev.stopPropagation()
         this.reset()
       },
-      onDeletePic (key) {
+   /* onDeletePic (key) {
         this.newPictures = []
         this.pictures = this.pictures.filter((pic, index) => index !== key)
         this.mode.workout.pictures = this.pictures
-      },
+      }, */
       onModify (ev) {
         this.hidden = false
         ev.preventDefault()
         ev.stopPropagation()
+        if (this.checked.length > 0) {
+          for (let i = 0; i < this.checked.length; i++) {
+            this.pictures = this.pictures.filter((value, index) => index !== this.checked[i])
+          }
+          this.mode.workout.pictures = this.pictures
+        }
         for (let i = 0; i < this.pictures.length; i++) {
           if (this.mode.workout.pictures.includes(this.pictures[i])) {
             this.auxPictures.push(this.pictures[i])
@@ -191,12 +214,15 @@
     font-weight: 800;
   }
   .icon {
+    position: absolute;
+    width: 100%;
+    margin: 0 0 0 -25px;
+    text-align: right;
+    cursor: pointer;
+  }
+  .check {
       position: absolute;
-      margin: 5px 0 0 -35px;
-      color: #CD5C5C;
-      font-size: 1.2rem;
-      -webkit-transition: font-size 1s;
-      transition: font-size 1s;
+      margin: 5px 0 0 -25px;
       cursor: pointer;
     }
 </style>
