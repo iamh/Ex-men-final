@@ -10,6 +10,7 @@ const configRef = null
 const statisticsRef = null
 const workoutsRef = null
 const displayName = ''
+const imgDefault = 'http://www.colombianosune.com/sites/default/files/asociaciones/NO_disponible-43_15.jpg'
 
 const mode = {
   workout: null
@@ -37,6 +38,8 @@ export default {
   workouts: [],
   authError: '',
   mode,
+  imgDefault,
+
   todos: [
     {
       description: 'Start using ToDo list',

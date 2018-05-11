@@ -19,12 +19,13 @@
         <input v-model="mode.workout.name" type="text" class="input" placeholder="Name it">
         <textarea v-model="mode.workout.description" type="text" class="input" placeholder="Describe it"></textarea>
         <div>
-          <i :style="{color: !select ? 'red' : 'grey'}" class="icon material-icons" @click="onSelect">delete</i>
-          <div class="container-img">
+          <i :style="{color: !select ? 'red' : 'grey'}" class="icon-edit material-icons" @click="onSelect" title="Edit">create</i>
+          <i v-if="select" class="icon-delete material-icons" @click="onDeletePic" title="Delete">delete</i>
+          <div v-if="this.mode.workout.pictures" class="container-img">
             <div v-for="(imagen, key) in getPictures" :key="key">
               <img :src="imagen">
-         <!-- <i class="icon material-icons" @click="onDeletePic(key)">delete</i> -->
               <input v-if="select" :id="key" v-model="checked" :value="key" class="check" type="checkbox">
+              <i v-if="select" class="icon-profile material-icons" @click="selectProfile(key)" title="this profile picture">face</i>
             </div>
           </div>
           <label class="title" for="imageFile">Relace the image</label>
@@ -51,7 +52,7 @@
         firePictures: [],
         newPictures: [],
         auxPictures: [],
-        arrayKey: [],
+        pic: [],
         isCreating: false,
         hidden: false,
         select: false,
@@ -73,11 +74,11 @@
         this.$refs.imageFile.value = null
         this.newPictures = []
         this.select = false
-        this.arrayKey = []
+        this.checked = []
       }
     },
     methods: {
-      ...mapActions(['modifyWorkout', 'setMode', 'deletePicture', 'uploadImages']),
+      ...mapActions(['modifyWorkout', 'setMode', 'deletePicture', 'uploadImages', 'setImgProfile']),
       previewFile (files) {
         this.firePictures = [...files]
         for (let i = 0; i < event.target.files.length; i++) {
@@ -92,7 +93,7 @@
         this.$emit('update:control', false)
         this.setMode({workout: null})
         this.select = false
-        this.arrayKey = []
+        this.checked = []
       },
       onModal () {
         if (!this.hidden) {
@@ -114,21 +115,26 @@
         ev.stopPropagation()
         this.reset()
       },
-   /* onDeletePic (key) {
+      onDeletePic () {
         this.newPictures = []
-        this.pictures = this.pictures.filter((pic, index) => index !== key)
+        this.checked = this.checked.sort().reverse()
+        for (let i = 0; i < this.checked.length; i++) {
+          this.pictures = this.pictures.filter((value, index) => index !== this.checked[i])
+        }
+        this.checked = []
+        this.mode.workout.pictures = this.pictures
+      },
+     /* onDeletePic (key) {
+        this.newPictures = []
+        this.pictures = this.pictures.filter((value, index) => index !== key)
         this.mode.workout.pictures = this.pictures
       }, */
+      selectProfile (key) {
+      },
       onModify (ev) {
         this.hidden = false
         ev.preventDefault()
         ev.stopPropagation()
-        if (this.checked.length > 0) {
-          for (let i = 0; i < this.checked.length; i++) {
-            this.pictures = this.pictures.filter((value, index) => index !== this.checked[i])
-          }
-          this.mode.workout.pictures = this.pictures
-        }
         for (let i = 0; i < this.pictures.length; i++) {
           if (this.mode.workout.pictures.includes(this.pictures[i])) {
             this.auxPictures.push(this.pictures[i])
@@ -213,16 +219,27 @@
     color: #4B8A08;
     font-weight: 800;
   }
-  .icon {
+  .icon-edit {
     position: absolute;
-    width: 100%;
-    margin: 0 0 0 -25px;
-    text-align: right;
+    margin: 0 0 0 -40px;
     cursor: pointer;
   }
+  .icon-delete {
+    position: absolute;
+    margin: 30px 0 0 -40px;
+    cursor: pointer;
+    color: #CD5C5C;
+  }
   .check {
-      position: absolute;
-      margin: 5px 0 0 -25px;
-      cursor: pointer;
-    }
+    position: absolute;
+    margin: 5px 0 0 -25px;
+    cursor: pointer;
+  }
+  .icon-profile {
+    position: absolute;
+    margin: 30px 0 0 -25px;
+    cursor: pointer;
+    color: #CD5C5C;
+    font-size: 1rem;
+  }
 </style>
