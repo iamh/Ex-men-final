@@ -19,17 +19,17 @@
         <input v-model="mode.workout.name" type="text" class="input" placeholder="Name it">
         <textarea v-model="mode.workout.description" type="text" class="input" placeholder="Describe it"></textarea>
         <div>
-          <i :style="{color: !select ? 'red' : 'grey'}" class="icon-edit material-icons" @click="onSelect" title="Edit">create</i>
-          <i v-if="select" class="icon-delete material-icons" @click="onDeletePic" title="Delete">delete</i>
+          <i :style="{color: !select ? 'red' : 'grey'}" class="icon-edit material-icons" @click="onSelect" title="Delete pictures" :disabled="selectProfile">delete</i>
+          <i :style="{color: !selectProfile ? 'red' : 'grey'}" class="icon-profile material-icons" @click="onSelectProfile" title="Select profile picture" :disabled="select">face</i>
           <div v-if="this.mode.workout.pictures" class="container-img">
             <div v-for="(imagen, key) in getPictures" :key="key">
               <img :src="imagen">
               <input v-if="select" :id="key" v-model="checked" :value="key" class="check" type="checkbox">
-              <i v-if="select" class="icon-profile material-icons" @click="selectProfile(key)" title="this profile picture">face</i>
+              <input v-if="selectProfile" :id="key" v-model="picked" :value="key" class="check" type="radio">
             </div>
           </div>
           <label class="title" for="imageFile">Relace the image</label>
-          <input @change="previewFile($event.target.files)" type="file" :disabled="select" multiple class="form-control-file" ref="imageFile">
+          <input @change="previewFile($event.target.files)" type="file" :disabled="select || selectProfile" multiple class="form-control-file" ref="imageFile">
         </div>
         <div class="row">
           <div class="col">
@@ -52,11 +52,13 @@
         firePictures: [],
         newPictures: [],
         auxPictures: [],
-        pic: [],
+        aux: [],
         isCreating: false,
         hidden: false,
         select: false,
-        checked: []
+        selectProfile: false,
+        checked: [],
+        picked: ''
       }
     },
     components: {
@@ -74,11 +76,13 @@
         this.$refs.imageFile.value = null
         this.newPictures = []
         this.select = false
+        this.selectProfile = false
         this.checked = []
+        this.picked = ''
       }
     },
     methods: {
-      ...mapActions(['modifyWorkout', 'setMode', 'deletePicture', 'uploadImages', 'setImgProfile']),
+      ...mapActions(['modifyWorkout', 'setMode', 'deletePicture', 'uploadImages']),
       previewFile (files) {
         this.firePictures = [...files]
         for (let i = 0; i < event.target.files.length; i++) {
@@ -93,7 +97,9 @@
         this.$emit('update:control', false)
         this.setMode({workout: null})
         this.select = false
+        this.selectProfile = false
         this.checked = []
+        this.picked = ''
       },
       onModal () {
         if (!this.hidden) {
@@ -105,9 +111,21 @@
       onSelect () {
         if (!this.select) {
           this.select = true
+          this.selectProfile = false
+          this.picked = ''
         } else {
           this.select = false
           this.checked = []
+        }
+      },
+      onSelectProfile () {
+        if (!this.selectProfile) {
+          this.selectProfile = true
+          this.select = false
+          this.checked = []
+        } else {
+          this.selectProfile = false
+          this.picked = ''
         }
       },
       onCancel (ev) {
@@ -115,26 +133,29 @@
         ev.stopPropagation()
         this.reset()
       },
-      onDeletePic () {
-        this.newPictures = []
-        this.checked = this.checked.sort().reverse()
-        for (let i = 0; i < this.checked.length; i++) {
-          this.pictures = this.pictures.filter((value, index) => index !== this.checked[i])
-        }
-        this.checked = []
-        this.mode.workout.pictures = this.pictures
-      },
      /* onDeletePic (key) {
         this.newPictures = []
         this.pictures = this.pictures.filter((value, index) => index !== key)
         this.mode.workout.pictures = this.pictures
       }, */
-      selectProfile (key) {
-      },
       onModify (ev) {
         this.hidden = false
         ev.preventDefault()
         ev.stopPropagation()
+        if (this.checked.length > 0) {
+          this.checked = this.checked.sort().reverse()
+          for (let i = 0; i < this.checked.length; i++) {
+            this.pictures = this.pictures.filter((value, index) => index !== this.checked[i])
+          }
+          this.checked = []
+          this.mode.workout.pictures = this.pictures
+        }
+        if (this.picked !== '') {
+          this.aux = this.pictures[this.picked]
+          this.pictures[this.picked] = this.pictures[0]
+          this.pictures[0] = this.aux
+          this.mode.workout.pictures = this.pictures
+        }
         for (let i = 0; i < this.pictures.length; i++) {
           if (this.mode.workout.pictures.includes(this.pictures[i])) {
             this.auxPictures.push(this.pictures[i])
@@ -224,7 +245,7 @@
     margin: 0 0 0 -40px;
     cursor: pointer;
   }
-  .icon-delete {
+  .icon-profile {
     position: absolute;
     margin: 30px 0 0 -40px;
     cursor: pointer;
@@ -235,11 +256,5 @@
     margin: 5px 0 0 -25px;
     cursor: pointer;
   }
-  .icon-profile {
-    position: absolute;
-    margin: 30px 0 0 -25px;
-    cursor: pointer;
-    color: #CD5C5C;
-    font-size: 1rem;
-  }
+ 
 </style>
