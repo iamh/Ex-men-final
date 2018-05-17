@@ -24,12 +24,13 @@
           <i :style="{color: !selectProfile ? 'grey' : 'red'}" class="icon-profile material-icons" @click="onSelectProfile" title="Select profile picture" :disabled="select">face</i>
         </div>
         <div v-if="this.mode.workout.pictures" class="portfolio">
-          <figure v-for="(imagen, key) in getPictures" :key="key" :class="key % 3 == 0 ? 'featured' : ''">
+          <figure v-for="(imagen, key) in previewDisplayPaginated" :key="key" :class="key % 3 == 0 ? 'featured' : ''">
             <img :src="imagen" />
             <input v-if="select" :id="key" v-model="checked" :value="key" class="check" type="checkbox">
             <input v-if="selectProfile" :id="key" v-model="picked" :value="key" class="check" type="radio">
           </figure>
         </div>
+        <workouts-pagination-component @loadMore="onLoadMore" :hasMore="hasMore"></workouts-pagination-component>
         <label class="title" for="imageFile">Relace the image</label>
         <input @change="previewFile($event.target.files)" type="file" :disabled="select || selectProfile" multiple class="form-control-file" ref="imageFile">
       </div>
@@ -47,6 +48,8 @@
 <script>
   import {mapActions, mapGetters} from 'vuex'
   import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
+  import WorkoutsPaginationComponent from '~/components/workouts/WorkoutsPaginationComponent'
+  
   export default {
     data () {
       return {
@@ -61,17 +64,26 @@
         hidden: false,
         select: false,
         selectProfile: false,
-        isImagen: false
+        isImagen: false,
+        pageImagenSize: 3,
+        actualImageSize: 3
       }
     },
     components: {
-      ClipLoader
+      ClipLoader,
+      WorkoutsPaginationComponent
     },
     computed: {
       ...mapGetters({mode: 'getMode'}),
       getPictures () {
         this.pictures = this.mode.workout.pictures.concat(this.newPictures)
         return this.pictures
+      },
+      previewDisplayPaginated () {
+        return this.getPictures.slice(0, this.actualImageSize)
+      },
+      hasMore () {
+        return this.getPictures.length > this.actualImageSize
       }
     },
     watch: {
@@ -92,6 +104,9 @@
           reader.readAsDataURL(event.target.files[i])
         }
       },
+      onLoadMore () {
+        this.actualImageSize += this.pageImagenSize
+      },
       resetVars () {
         this.$refs.imageFile.value = null
         this.newPictures = []
@@ -102,6 +117,8 @@
         this.selectProfile = false
         this.isImagen = false
         this.hidden = false
+        this.pageImagenSize = 3
+        this.actualImageSize = 3
       },
       reset () {
         this.$emit('update:control', false)
