@@ -6,7 +6,7 @@
     </div>
     <div class="card-columns">
       <div data-toggle="modal" v-for="(workout, key) in workoutsToDisplayPaginated" :key="key" class="card" @click="onChosenWorkout(workout)">
-        <div :class="['img-selector', !op ? '' : (workout['.key'] === mode.workout['.key'] ? 'img-scale-up' : 'img-scale-down') ]">
+        <div :class="['img-selector', !op ? '' : (workout['.key'] === mode.workout['.key'] ? 'img-scale-up' : 'img-scale-down')]">
           <img class="card-img-top img-fluid" :src="workout.pictures && workout.pictures.length && workout.pictures[0] ? workout.pictures[0] : imgDefault" :alt="workout.name">
           <i :class="['icon material-icons', op && workout['.key'] === mode.workout['.key'] ? 'icon-transition' : '']" @click="onDelete(workout['.key'])" title="Delete this workout">delete</i>
           <div class="card-block">

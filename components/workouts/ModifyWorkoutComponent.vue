@@ -15,31 +15,33 @@
       </div>
     </div>
     <h2 class="title">Modify your workout</h2>
-      <form>
-        <input v-model="mode.workout.name" type="text" class="input" placeholder="Name it">
-        <textarea v-model="mode.workout.description" type="text" class="input" placeholder="Describe it"></textarea>
-        <div>
-          <i :style="{color: !select ? 'red' : 'grey'}" class="icon-edit material-icons" @click="onSelect" title="Delete pictures" :disabled="selectProfile">delete</i>
-          <i :style="{color: !selectProfile ? 'red' : 'grey'}" class="icon-profile material-icons" @click="onSelectProfile" title="Select profile picture" :disabled="select">face</i>
-          <div v-if="this.mode.workout.pictures" class="container-img">
-            <div v-for="(imagen, key) in getPictures" :key="key">
-              <img :src="imagen">
-              <input v-if="select" :id="key" v-model="checked" :value="key" class="check" type="checkbox">
-              <input v-if="selectProfile" :id="key" v-model="picked" :value="key" class="check" type="radio">
-            </div>
-          </div>
-          <label class="title" for="imageFile">Relace the image</label>
-          <input @change="previewFile($event.target.files)" type="file" :disabled="select || selectProfile" multiple class="form-control-file" ref="imageFile">
+    <form>
+      <input v-model="mode.workout.name" type="text" class="input" placeholder="Name it">
+      <textarea v-model="mode.workout.description" type="text" class="input" placeholder="Describe it"></textarea>
+      <div>
+        <div v-if="!isImagen">
+          <i :style="{color: !select ? 'grey' : 'red'}" class="icon-edit material-icons" @click="onSelect" title="Delete pictures" :disabled="selectProfile">delete</i>
+          <i :style="{color: !selectProfile ? 'grey' : 'red'}" class="icon-profile material-icons" @click="onSelectProfile" title="Select profile picture" :disabled="select">face</i>
         </div>
-        <div class="row">
-          <div class="col">
-            <button v-show="!isCreating" @click="onCancel" type="button" class="button button-primary">Cancel</button>
-          </div>
-          <div class="col">
-            <button v-show="!isCreating" type="button" class="button button-primary" :disabled="this.mode.workout.name == '' || this.mode.workout.description == ''" @click="onModal">Apply</button>
-          </div>
+        <div v-if="this.mode.workout.pictures" class="portfolio">
+          <figure v-for="(imagen, key) in getPictures" :key="key" :class="key % 3 == 0 ? 'featured' : ''">
+            <img :src="imagen" />
+            <input v-if="select" :id="key" v-model="checked" :value="key" class="check" type="checkbox">
+            <input v-if="selectProfile" :id="key" v-model="picked" :value="key" class="check" type="radio">
+          </figure>
         </div>
-      </form>
+        <label class="title" for="imageFile">Relace the image</label>
+        <input @change="previewFile($event.target.files)" type="file" :disabled="select || selectProfile" multiple class="form-control-file" ref="imageFile">
+      </div>
+      <div class="row">
+        <div class="col">
+          <button v-show="!isCreating" @click="onCancel" type="button" class="button button-primary">Cancel</button>
+        </div>
+        <div class="col">
+          <button v-show="!isCreating" type="button" class="button button-primary" :disabled="this.mode.workout.name == '' || this.mode.workout.description == ''" @click="onModal">Apply</button>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 <script>
@@ -53,12 +55,13 @@
         newPictures: [],
         auxPictures: [],
         aux: [],
+        checked: [],
+        picked: '',
         isCreating: false,
         hidden: false,
         select: false,
         selectProfile: false,
-        checked: [],
-        picked: ''
+        isImagen: false
       }
     },
     components: {
@@ -73,17 +76,13 @@
     },
     watch: {
       mode () {
-        this.$refs.imageFile.value = null
-        this.newPictures = []
-        this.select = false
-        this.selectProfile = false
-        this.checked = []
-        this.picked = ''
+        this.resetVars()
       }
     },
     methods: {
       ...mapActions(['modifyWorkout', 'setMode', 'deletePicture', 'uploadImages']),
       previewFile (files) {
+        this.isImagen = true
         this.firePictures = [...files]
         for (let i = 0; i < event.target.files.length; i++) {
           var reader = new FileReader()
@@ -93,13 +92,21 @@
           reader.readAsDataURL(event.target.files[i])
         }
       },
+      resetVars () {
+        this.$refs.imageFile.value = null
+        this.newPictures = []
+        this.checked = []
+        this.picked = ''
+        this.isCreating = false
+        this.select = false
+        this.selectProfile = false
+        this.isImagen = false
+        this.hidden = false
+      },
       reset () {
         this.$emit('update:control', false)
         this.setMode({workout: null})
-        this.select = false
-        this.selectProfile = false
-        this.checked = []
-        this.picked = ''
+        this.resetVar()
       },
       onModal () {
         if (!this.hidden) {
@@ -140,14 +147,15 @@
       }, */
       onModify (ev) {
         this.hidden = false
+        this.isCreating = true
         ev.preventDefault()
         ev.stopPropagation()
         if (this.checked.length > 0) {
+          this.newPictures = []
           this.checked = this.checked.sort().reverse()
           for (let i = 0; i < this.checked.length; i++) {
             this.pictures = this.pictures.filter((value, index) => index !== this.checked[i])
           }
-          this.checked = []
           this.mode.workout.pictures = this.pictures
         }
         if (this.picked !== '') {
@@ -168,11 +176,9 @@
               pictures: this.auxPictures.concat(picUrls)
             }).then(() => {
               this.reset()
-              this.isCreating = false
             })
           }).then(() => {
             this.reset()
-            this.isCreating = false
           })
         } else {
           this.isCreating = false
@@ -184,15 +190,6 @@
 <style scoped lang="scss">
   .title {
     width: 100%;
-  }
-  .container-img {
-    flex-wrap: wrap;
-    flex-direction: row;
-    display: flex;
-  }
-  img {
-    width: 160px;
-    margin-right: 0.5em;
   }
   .row {
     margin-top: 1em;
@@ -253,8 +250,29 @@
   }
   .check {
     position: absolute;
-    margin: 5px 0 0 -25px;
+    margin: 10px 0 0 10px;
     cursor: pointer;
   }
- 
+  // grid img //
+  .portfolio {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-auto-rows: 1fr;
+    grid-gap: 1em;
+    grid-auto-flow: dense;
+  }
+  .portfolio .featured {
+    grid-row: span 2;
+    grid-column: span 2;
+  }
+  .portfolio > figure {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+  .portfolio img {
+    flex: 1; 
+    object-fit: cover; 
+    max-width: 100%;
+  }
 </style>
