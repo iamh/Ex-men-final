@@ -1,16 +1,24 @@
 <template>
   <div>
-    <div v-show="isCreating" class="modal-wrapper">
+    <div v-show="isCreating" class="modal-wrapper-spinner">
       <div class="modal">
         <clip-loader/>
       </div>
     </div>
-    <div class="modal-wrapper-buttons"  v-show="hidden">
+    <div class="modal-wrapper-bg"  v-show="hidden">
       <div class="modal-buttons">
         <h4>Desea guardar los cambios?</h4>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" @click="onModal">Cancel</button>
           <button type="button" class="btn btn-danger" @click="onModify">Save changes</button>
+        </div>
+      </div>
+    </div>
+    <div v-show="animation" class="modal-wrapper-bg">
+      <i class="icon-close material-icons" @click="isAnimation">close</i>
+      <div class="flyin-grid">
+        <div v-for="(img, key) in getPictures" :key="key" class="flyin-grid__item card">
+          <img :src="img" class="imagen" />
         </div>
       </div>
     </div>
@@ -20,8 +28,9 @@
       <textarea v-model="mode.workout.description" type="text" class="input" placeholder="Describe it"></textarea>
       <div>
         <div v-if="!isImagen">
-          <i :style="{color: !select ? 'grey' : 'red'}" class="icon-edit material-icons" @click="onSelect" title="Delete pictures" :disabled="selectProfile">delete</i>
+          <i :style="{color: !select ? 'grey' : 'red'}" class="icon-delete material-icons" @click="onSelect" title="Delete pictures" :disabled="selectProfile">delete</i>
           <i :style="{color: !selectProfile ? 'grey' : 'red'}" class="icon-profile material-icons" @click="onSelectProfile" title="Select profile picture" :disabled="select">face</i>
+          <i v-if="!select && !selectProfile" class="icon-open material-icons" @click="isAnimation">open_with</i>
         </div>
         <div v-if="this.mode.workout.pictures" class="portfolio">
           <figure v-for="(imagen, key) in previewDisplayPaginated" :key="key" :class="key % 3 == 0 ? 'featured' : ''">
@@ -65,6 +74,7 @@
         select: false,
         selectProfile: false,
         isImagen: false,
+        animation: false,
         pageImagenSize: 3,
         actualImageSize: 3
       }
@@ -115,6 +125,7 @@
         this.isCreating = false
         this.select = false
         this.selectProfile = false
+        this.animation = false
         this.isImagen = false
         this.hidden = false
         this.pageImagenSize = 3
@@ -125,12 +136,11 @@
         this.setMode({workout: null})
         this.resetVar()
       },
+      isAnimation () {
+        this.animation = !this.animation
+      },
       onModal () {
-        if (!this.hidden) {
-          this.hidden = true
-        } else {
-          this.hidden = false
-        }
+        this.hidden = !this.hidden
       },
       onSelect () {
         if (!this.select) {
@@ -211,7 +221,44 @@
   .row {
     margin-top: 1em;
   }
-  .modal-wrapper {
+  .button.button-primary:disabled {
+    background-color: grey;
+  }
+  h4 {
+    color: #4B8A08;
+    font-weight: 800;
+  }
+  .check {
+    position: absolute;
+    margin: 10px 0 0 10px;
+    cursor: pointer;
+  }
+  // icons //
+  .icon-delete {
+    position: absolute;
+    margin: 0 0 0 -40px;
+    cursor: pointer;
+  }
+  .icon-profile {
+    position: absolute;
+    margin: 30px 0 0 -40px;
+    cursor: pointer;
+    color: #CD5C5C;
+  }
+  .icon-open {
+    position: absolute;
+    cursor: pointer;
+    margin: 60px 0 0 -40px;
+    color: #17202A;
+  }
+  .icon-close {
+    color: white;
+    float: right;
+    cursor: pointer;
+    margin: 0.5em 0.5em 0 0;
+  }
+  // Spinner //
+  .modal-wrapper-spinner {
     position: fixed;
     top: 0;
     left: 0;
@@ -221,7 +268,7 @@
     z-index: 99999999;
     background-color:rgba(0,0,0,.2)
   }
-  .modal-wrapper:before {
+  .modal-wrapper-spinner:before {
     content: '';
     display: inline-block;
     height: 100%;
@@ -233,7 +280,8 @@
     vertical-align: middle;
     margin: 0 auto;    
   }
-  .modal-wrapper-buttons {
+  // modal buttons //
+  .modal-wrapper-bg {
     position: fixed;
     top: 0;
     left: 0;
@@ -246,29 +294,6 @@
     position: relative;
     width: 30%;
     margin: 90px auto;
-  }
-  .button.button-primary:disabled {
-    background-color: grey;
-  }
-  h4 {
-    color: #4B8A08;
-    font-weight: 800;
-  }
-  .icon-edit {
-    position: absolute;
-    margin: 0 0 0 -40px;
-    cursor: pointer;
-  }
-  .icon-profile {
-    position: absolute;
-    margin: 30px 0 0 -40px;
-    cursor: pointer;
-    color: #CD5C5C;
-  }
-  .check {
-    position: absolute;
-    margin: 10px 0 0 10px;
-    cursor: pointer;
   }
   // grid img //
   .portfolio {
@@ -291,5 +316,71 @@
     flex: 1; 
     object-fit: cover; 
     max-width: 100%;
+  }
+  // modal animation //
+  .flyin-grid {
+    width: 95%;
+    margin: 1em auto;
+    perspective: 500px;
+  }
+  .flyin-grid__item {
+    animation: fly-in 600ms ease-in;
+    animation-fill-mode: backwards;
+  }
+  .flyin-grid__item:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .flyin-grid__item:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .flyin-grid__item:nth-child(4) {
+    animation-delay: 0.45s;
+  }
+  .card {
+    margin-bottom: 1em;
+    padding: 0.5em;
+    background-color: #EAEDED;
+    color: hsl(210, 15%, 20%);
+    box-shadow: 0.2em 0.5em 1em rgba(0, 0, 0, 0.3);
+  }
+  .card > .imagen {
+    width: 100%;
+  }
+  @keyframes fly-in {
+    0% {
+      transform: translateZ(-800px) rotateY(90deg);
+      opacity: 0;
+    }
+    56% {
+      transform: translateZ(-160px) rotateY(87deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateZ(0) rotateY(0);
+    }
+  }
+  @media (min-width: 30em) {
+    .flyin-grid {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 1em auto;
+    }
+    .flyin-grid__item {
+      flex: 1 1 200px;
+      margin-left: 0.5em;
+      margin-right: 0.5em;
+      max-width: 600px;
+    }
+  }
+  @supports (display: grid) {
+    .flyin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-gap: 2em;
+    }
+    .flyin-grid__item {
+      max-width: initial;
+      margin: 0;
+    }
   }
 </style>
