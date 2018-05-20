@@ -21,5 +21,6 @@ export default {
   doneTodos: state => _.filter(state.todos, todo => !todo.active),
   getLoading: state => loading => state.loading[loading],
   getMode: state => state.mode,
-  getImgDefault: state => state.imgDefault
+  getImgDefault: state => state.imgDefault,
+  getWorkout: state => state.workout
 }

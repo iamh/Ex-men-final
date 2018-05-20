@@ -1,10 +1,10 @@
 <template>
   <div>
-    <header-component></header-component>
+    <header-component :picProfile="photoProfile"></header-component>
     <div class="container min-full-height">
       <div class="main-content row">
         <div class="col-sm-12 col-lg-4">
-          <account-settings></account-settings>
+          <account-settings :photoProfile.sync="photoProfile"></account-settings>
         </div>
         <div class="col-sm-12 col-lg-8">
           <pomodoro-timer-settings></pomodoro-timer-settings>
@@ -21,6 +21,11 @@
 
   export default {
     middleware: 'authenticated',
+    data () {
+      return {
+        photoProfile: ''
+      }
+    },
     components: {
       HeaderComponent,
       FooterComponent,

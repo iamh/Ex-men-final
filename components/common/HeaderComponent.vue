@@ -26,10 +26,27 @@
               <nuxt-link class="nav-link profitoro-link" :class="{disabled:!isAuthenticated}" to="workouts">Workouts </nuxt-link>
             </li>
           </ul>
-          <form class="buttons-holder">
+          <form class="buttons-holder d-lg-none">
             <span v-if="isAuthenticated" class="nav-link profitoro-link" @click="onLogout">Logout</span>
             <span v-if="!isAuthenticated" class="nav-link profitoro-link" @click="onLogout">Go to the start page</span>
           </form>
+          <div class="panel-group d-none d-lg-block">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <a data-toggle="collapse" href="#collapse1">
+                  <img :title="this.displayName" class="iconImage img-thumbnail rounded-circle" :src="this.picProfile ? this.picProfile : this.photoURL">
+                </a>
+              </div>
+              <div id="collapse1" class="panel-collapse collapse">
+                <ul class="list-group">
+                  <!-- <li class="list-group-item">{{this.displayName}}</li> -->
+                  <li v-if="isAuthenticated" class="list-group-item nav-link profitoro-link" @click="onLogout">logout</li>
+                  <li v-if="!isAuthenticated" class="list-group-item nav-link profitoro-link" @click="onLogout">Go to the start page</li>
+                  <li v-show="isAuthenticated" class="list-group-item nav-link profitoro-link" @click="onSettings">Settings</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </nav>
     </div>
@@ -40,15 +57,31 @@
   import Logo from '~/components/common/Logo'
 
   export default {
+    props: ['picProfile'],
     name: 'header-component',
+    data () {
+      return {
+        displayName: 'Anonimo',
+        photoURL: 'https://thumbs.dreamstime.com/z/icono-an%C3%B3nimo-del-usuario-89671074.jpg'
+      }
+    },
+    created () {
+      if (this.isAuthenticated) {
+        this.displayName = this.user.displayName
+        this.photoURL = this.user.photoURL ? this.user.photoURL : this.photoURL
+      }
+    },
     computed: {
-      ...mapGetters({name: 'getDisplayName', isAuthenticated: 'isAuthenticated'})
+      ...mapGetters({name: 'getDisplayName', isAuthenticated: 'isAuthenticated', user: 'getUser'})
     },
     methods: {
       ...mapActions(['logout']),
       onLogout () {
         this.logout()
         this.$router.push('/')
+      },
+      onSettings () {
+        this.$router.push('settings')
       }
     },
     components: {
@@ -99,10 +132,16 @@
     }
     .buttons-holder {
       margin-left: 60px;
-
       @include media-breakpoint-down(md) {
         margin-left: 0;
       }
+    }
+    .panel-group {
+       margin-left: 60px;
+    }
+    .iconImage{
+      max-width: 8em;
+      max-height: 4em;
     }
   }
 </style>

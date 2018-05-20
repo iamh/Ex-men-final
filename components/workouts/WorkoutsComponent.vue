@@ -60,7 +60,7 @@
       WorkoutsPaginationComponent
     },
     methods: {
-      ...mapActions(['setMode', 'deleteWorkout']),
+      ...mapActions(['setMode', 'deleteWorkout', 'setWorkout']),
       onChosenWorkout (workout) {
         this.name = workout.name
         this.description = workout.description
@@ -71,6 +71,7 @@
         this.setMode({
           workout: {...workout}
         })
+        this.setWorkout(workout['.key'])
         this.$emit('update:control', true)
       },
       onLoadMore () {

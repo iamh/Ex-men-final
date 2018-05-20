@@ -367,6 +367,13 @@ export default {
   },
   setMode ({commit}, mode) {
     commit('setMode', mode)
+  },
+  setWorkout ({commit}, key) {
+    let db = firebaseApp.database()
+    let workout = db.ref('workouts/' + key)
+    workout.on('value', function (snapshot) {
+      commit('setWorkout', snapshot.val())
+    })
   }
 
 }

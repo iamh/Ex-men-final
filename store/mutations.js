@@ -48,6 +48,9 @@ export default {
   },
   setMode (state, mode) {
     state.mode = mode
+  },
+  setWorkout (state, workout) {
+    state.workout = workout
   }
 
 }

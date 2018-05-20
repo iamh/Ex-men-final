@@ -49,6 +49,7 @@
       onChangeProfilePicture (files) {
         this.uploadImages([...files]).then(picUrls => {
           this.photoURL = picUrls[0]
+          this.$emit('update:photoProfile', this.photoURL)
           this.updatePhotoURL(this.photoURL)
           this.$refs.imageFile.value = null
         })

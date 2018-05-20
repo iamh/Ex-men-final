@@ -11,6 +11,7 @@ const statisticsRef = null
 const workoutsRef = null
 const displayName = ''
 const imgDefault = 'http://www.colombianosune.com/sites/default/files/asociaciones/NO_disponible-43_15.jpg'
+const workout = null
 
 const mode = {
   workout: null
@@ -39,6 +40,7 @@ export default {
   authError: '',
   mode,
   imgDefault,
+  workout,
 
   todos: [
     {
